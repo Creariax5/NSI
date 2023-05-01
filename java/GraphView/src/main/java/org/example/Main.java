@@ -12,6 +12,7 @@ import javax.swing.Timer;
 import java.util.*;
 
 public class Main {
+    // NSI COMMENTAIRE : création des objets
     JLabel view;
     BufferedImage surface;
     Random random = new Random();
@@ -21,18 +22,23 @@ public class Main {
 
     List<Integer> listCircle = new ArrayList<>();
 
+    // NSI COMMENTAIRE : classe principale qui appelle les autres
     public Main()
     {
+        // NSI COMMENTAIRE : création de l'image
         surface = new BufferedImage(1400,1000,BufferedImage.TYPE_INT_RGB);
         view = new JLabel(new ImageIcon(surface));
 
+        // NSI COMMENTAIRE : s'execute toutes les 50 ms
         ActionListener listener = new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
+                // NSI COMMENTAIRE : création de l'image
                 Graphics g = surface.getGraphics();
                 g.setColor(Color.BLACK);
                 g.fillRect(0,0,1400,1000);
                 g.dispose();
 
+                // NSI COMMENTAIRE : lecture du csv
                 String file = "D:\\devProjects\\PycharmProjects\\scraping\\wikipedia\\brain\\csv\\data.csv";
                 int i = 0;
                 for (String[] row : Objects.requireNonNull(CsvToArray.catchCsv(file))) {
@@ -48,20 +54,21 @@ public class Main {
         timer.start();
     }
 
+    // NSI COMMENTAIRE : création des cercles aux bonnes coordonnées et de la bonne taille
     private void addCircleAtForeground(int id) {
-
-
         Graphics g = surface.getGraphics();
         Circle cell = cells.get(id);
 
         int intX = (int) cell.getX();
         int intY = (int) cell.getY();
-        int size = (int) cell.getSize();
+        int size = cell.getSize();
 
         drawNode(intX, intY, size, g);
     }
 
+    // NSI COMMENTAIRE : calcul des forces
     public void addNewElement(String[] row, int id) {
+        // NSI COMMENTAIRE : initialisation
         double force = 0.1;
 
         double x;
@@ -71,8 +78,10 @@ public class Main {
         double calcY;
         double Xbase = 0;
         double Ybase = 0;
+        // NSI COMMENTAIRE : si le cercle de la page n'a pas été créé
         if (id >= listCircle.size()) {
 
+            // NSI COMMENTAIRE : on le cré à des coo aleatoires
             x = random.nextDouble(1400);
             y = random.nextDouble(1000);
 
@@ -80,6 +89,7 @@ public class Main {
 
             int size = 1;
 
+            // NSI COMMENTAIRE : l'objet 'circle' est mis dans une Hashtable c'est une sorte de dictionnaire
             cells.put(id, new Circle(x, y, size, row, id));
             IdWithName.put(cells.get(id).getRow()[0], id);
             System.out.println(cells.get(id).getRow()[0] + " " + id);

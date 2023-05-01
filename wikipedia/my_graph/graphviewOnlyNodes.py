@@ -19,6 +19,7 @@ for i in tqdm(range(len(edges))):
     my_list.append(edges[i][0])
 for e in edges:
     for j in range(len(e)):
+        # NSI COMMENTAIRE : afficher que les liens dont la page a été scrap
         if e[j] in my_list and j != 0:
             G.add_edge(e[0], e[j])
 

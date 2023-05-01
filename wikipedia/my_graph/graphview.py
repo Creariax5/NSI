@@ -4,6 +4,7 @@ import csv
 from tqdm import tqdm
 
 edges = []
+# NSI COMMENTAIRE : ouvrir le fichier csv
 with open("E:/Wiki-Scrap/wikipedia/brain/csv/data.csv", 'r') as file:
     csvreader = csv.reader(file)
     for row in csvreader:
@@ -12,6 +13,7 @@ with open("E:/Wiki-Scrap/wikipedia/brain/csv/data.csv", 'r') as file:
             tmp.append(col)
         edges.append(tmp)
 
+# NSI COMMENTAIRE : créer le graphique
 G = nx.Graph()
 for i in tqdm(range(len(edges))):
     G.add_node(edges[i][0])
