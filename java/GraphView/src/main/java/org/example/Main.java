@@ -22,7 +22,8 @@ public class Main {
 
     List<Integer> listCircle = new ArrayList<>();
 
-    // NSI COMMENTAIRE : classe principale qui appelle les autres
+    // NSI COMMENTAIRE : deuxieme classe principale qui appelle les autres elle est appellée par 'main'
+    // (le code ne s'execute pas du haut vers le bas comme en pyton)
     public Main()
     {
         // NSI COMMENTAIRE : création de l'image
@@ -95,6 +96,7 @@ public class Main {
             System.out.println(cells.get(id).getRow()[0] + " " + id);
 
         } else {
+            // NSI COMMENTAIRE : si il existe pas
             Circle cell = cells.get(id);
 
             x = cell.getX();
@@ -104,14 +106,17 @@ public class Main {
 
             calcX = x - 700;
             calcY = y - 500;
-
+            // NSI COMMENTAIRE : ___ première force (vers le centre) ___
+            // calcul de la disctance centre au cercle grace au theoreme de pythagore
             double distanceToC = Math.sqrt(Math.pow(calcX, 2) + Math.pow(calcY, 2));
+            // NSI COMMENTAIRE : plus le cercle est éloingné plus la force est forte
             double puissance = Math.pow(distanceToC/100, 1.15);
             if (distanceToC>500) {
                 puissance = 100;
             }
 
             if (distanceToC > 300) {
+                // NSI COMMENTAIRE : on ajuste la force et on calcule la position suivante du cercle grace au theoreme de tales
                 calcX = (puissance * force * calcX) / distanceToC;
                 calcY = (puissance * force * calcY) / distanceToC;
 
@@ -125,34 +130,45 @@ public class Main {
 
             int size = 1;
 
+            // NSI COMMENTAIRE : pour chaque cercle
             for (int j : listCircle) {
                 calcX = x - 700;
                 calcY = y - 500;
 
+                // NSI COMMENTAIRE : on verifi si ce n'est pas le cercle actuel
                 if (j != id) {
 
+                    // NSI COMMENTAIRE : ___ deuxieme force (quand les ceclessont trop proches ils se repoussent) ___
                     Circle newCell = cells.get(j);
                     double newX = newCell.getX() - 700;
                     double newY = newCell.getY() - 500;
 
+                    // NSI COMMENTAIRE : calcul de la disctance entre deux cercles grace au theoreme de pythagore
                     double distanceToNew = Math.sqrt(Math.pow(newX - calcX, 2) + Math.pow(newY - calcY, 2));
 
                     double distanceX = calcX - newX;
                     double distanceY = calcY - newY;
 
 
+                    // NSI COMMENTAIRE : la puissance de la force d'éloignement est calculée avec une fonction sigmoide
+                    // (plus la distance est grande moins la force sera faible)
                     puissance = -(1 / (1 + Math.exp(-(distanceToNew - 0) / 80)) - 1);
 
                     //System.out.println(distanceX +" "+distanceY);
                     if (distanceToNew < 60) {
+                        // NSI COMMENTAIRE : on ajuste la force et on calcule la position suivante du cercle grace au theoreme de tales
                         FcalcX = FcalcX + (newCell.getSize() * 160 * puissance * distanceX) / distanceToNew;
                         FcalcY = FcalcY + (newCell.getSize() * 160 * puissance * distanceY) / distanceToNew;
                     }
 
                     puissance = Math.pow(distanceToNew, 1);
 
+                    // NSI COMMENTAIRE : ___ troisieme force (vers les liens entre les cecles) ___
+
+                    // NSI COMMENTAIRE : pour chaque lien du cercle
                     for (String link : cell.getRow()) {
                         if (Objects.equals(link, newCell.getRow()[0])) {
+                            // NSI COMMENTAIRE : on ajuste la force et on calcule la position suivante du cercle grace au theoreme de tales
                             FcalcX = FcalcX - (newCell.getSize() * 0.01 * puissance * distanceX) / distanceToNew;
                             FcalcY = FcalcY - (newCell.getSize() * 0.01 * puissance * distanceY) / distanceToNew;
                             Graphics g = surface.getGraphics();
@@ -168,6 +184,7 @@ public class Main {
             x = x + FcalcX;
             y = y + FcalcY;
 
+            // NSI COMMENTAIRE : si les coo on sufisament changé on met a jour les coo du cercle dans la hashtable
             if (Math.pow(x - Xbase, 2) > 0 || Math.pow(y - Ybase, 2) > 0) {
                 cells.put(id, new Circle(x, y, size, row, id));
             } else {
@@ -178,6 +195,7 @@ public class Main {
 
         }
 
+        // NSI COMMENTAIRE : on affiche a l'écrant le cercle a ses nouvelles coo
         int intX = (int) x;
         int intY = (int) y;
 
@@ -189,12 +207,16 @@ public class Main {
         view.repaint();
     }
 
+    // NSI COMMENTAIRE : classe principale qui s'execute en premier
     public static void main(String[] args)
     {
+        // NSI COMMENTAIRE : création de l'interface graphique
         Main canvas = new Main();
         JFrame frame = new JFrame();
-        int vertexes = 0;
-        // Change this next part later to be dynamic.
+
+        // NSI COMMENTAIRE : on met a jour les propiétés
+        int vertexes;
+
         vertexes = 10;
         int canvasSize = vertexes * vertexes;
         frame.setSize(canvasSize, canvasSize);
@@ -205,6 +227,7 @@ public class Main {
         frame.setVisible(true);
     }
 
+    // NSI COMMENTAIRE : afficher un cercle
     public void drawNode(int x, int y, int size, Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
 
@@ -217,6 +240,7 @@ public class Main {
         graphics2D.drawOval(x-120, y-120, 240, 240)*/;
     }
 
+    // NSI COMMENTAIRE : afficher le vecteur de la force appliquée aux cercles (deplacement a chaque frame *100)
     public void drawArc(int x, int y, int xx, int yy, Graphics g) {
         // translation vector
         Graphics2D graphics2D = (Graphics2D) g;
@@ -226,6 +250,7 @@ public class Main {
         graphics2D.drawLine(x + 4, y + 4, xx + 4, yy + 4);
     }
 
+    // NSI COMMENTAIRE : on affiche les liens entre les cercles
     public void drawLink(int x, int y, int xx, int yy, Graphics g) {
 
         Graphics2D graphics2D = (Graphics2D) g;
