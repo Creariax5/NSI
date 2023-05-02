@@ -21,7 +21,8 @@ while i <= len(links):
     # NSI COMMENTAIRE : créé une liste vide
     case = []
     print("begin request: " + links[i])
-    # NSI COMMENTAIRE : fait une requete et stocke tout le code de la page web donc l'adresse est la concatenation de url et links à l'indice de i
+    # NSI COMMENTAIRE : fait une requete et stocke tout le code de la page web donc l'adresse est la concatenation de
+    # url et links à l'indice de i
     result = requests.get(url + links[i])
     # NSI COMMENTAIRE : 'if' teste si il n'y a pas eu d'erreur
     if result.ok:

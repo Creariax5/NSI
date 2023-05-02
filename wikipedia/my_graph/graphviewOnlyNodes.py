@@ -4,7 +4,7 @@ import csv
 from tqdm import tqdm
 
 edges = []
-with open("E:/Wiki-Scrap/wikipedia/brain/csv/data.csv", 'r') as file:
+with open("C:/florian/dev/NSI/NSI/wikipedia/brain/csv/data.csv", 'r') as file:
     csvreader = csv.reader(file)
     for row in csvreader:
         tmp = []
@@ -23,5 +23,5 @@ for e in edges:
         if e[j] in my_list and j != 0:
             G.add_edge(e[0], e[j])
 
-nx.draw_networkx(G, with_labels=True)
+nx.draw_networkx(G, with_labels=True, edge_color="#FFF000")
 plt.show()
